@@ -1,15 +1,23 @@
 ---
-title: "I have the best titles"
-author: Your name here
-subtitle: Subtitle here if desired
+title: "A comparative analysis of regional economic resilience: employment rate and revised employment rate"
+author: Jong-Seo Won
+subtitle: Identifying resilient and non-resilient regions by using two different resilience indicators 
 ---
 
 # Introduction
-My really awesome and complete introduction will go here.  
+Recently, the notion of resilience has attracted attention from many economic geographers who try to understand how regional economies respond to and recover from disturbances. However, the concept of resilience in economic geography studies still remains unclear. Particularly, there is no universally-agreed resilience indicator to measure regional economic resilience.
+In order to explore regional economic resilience of 51 regions in the U.S. in response to the globali financial crisis in the late 2000s, this study attempts to use different type of resilience indicator termed as 'revised employment rate', which is the ratio of employed population to total population from age 16 to 64 considered as working age, instead of employment rte, one of the most commonly used resilience indicators.
 
-> I know words.  I have the best words.  ~ Donald Trump
+Employment rate = employed population / employed + unemployed population
+Revised employment rate = employed population / age 15-64 population
+
+The object of this project is to  explore regional resilience of 51 regions in the United States  by using two resilience indicators mentioned above.
+
+
 
 # Materials and methods
+
+
 
 Narrative and most code will go here.  Describe what you are doing and show how to do it (with code).
 
@@ -30,43 +38,104 @@ See [http://rmarkdown.rstudio.com/](http://rmarkdown.rstudio.com/) for all the a
 
 Here's my first code chunk.
 ```{r}
-2+2
+library(readr)
+library(sp)
+
 ```
 
 Load any required packages in a code chunk (you may need to install some packages):
 
 ```{r, message=F, warning=F}
-library(dplyr)
-library(ggplot2)
-library(maps)
-library(spocc)
-knitr::opts_chunk$set(cache=TRUE)  # cache the results for quick compiling
+
+
+
+
 ```
 
 
-We are going to use the `occ()` function to download _occurrence_ records for the American robin (_Turdus migratorius_) from the [Global Biodiversity Information Facility](gbif.org).
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Turdus-migratorius-002.jpg" alt="alt text" width="200">
-<small><small><small>Licensed under CC BY-SA 3.0 via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Turdus-migratorius-002.jpg#/media/File:Turdus-migratorius-002.jpg)</small></small></small>
 
 ```{r, warning=F} 
-## define which species to query
-sp='Turdus migratorius'
+## import dataset from Github
+
+## import 2005 dataset (population, employment & unemployment)
+ACS_05_EST_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S0701_with_ann.csv")
+
+ACS_05_EST_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S2301_with_ann.csv")
+
+
+## import 2006 dataset (population, employment & unemployment)
+ACS_06_EST_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S0701_with_ann.csv")
+
+ACS_06_EST_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S2301_with_ann.csv")
+
+
+## import 2007 dataset (population, employment & unemployment)
+ACS_07_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S0701_with_ann.csv")
+
+ACS_07_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S2301_with_ann.csv")
+
+
+## import 2008 dataset (population, employment & unemployment)
+ACS_08_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv")
+
+ACS_08_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S2301_with_ann.csv")
+
+
+## import 2009 dataset (population, employment & unemployment)
+ACS_09_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S0701_with_ann.csv")
+
+ACS_09_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S2301_with_ann.csv")
+
+
+## import 2010 dataset (population, employment & unemployment)
+ACS_10_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv")
+
+ACS_10_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S2301_with_ann.csv")
+
+
+## import 2011 dataset (population, employment & unemployment)
+ACS_11_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S0701_with_ann.csv")
+
+ACS_11_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S2301_with_ann.csv")
+
+
+## import 2012 dataset (population, employment & unemployment)
+ACS_12_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S0701_with_ann.csv")
+
+ACS_12_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S2301_with_ann.csv")
+
+
+## import 2013 dataset (population, employment & unemployment)
+ACS_13_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S0701_with_ann.csv")
+
+ACS_13_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S2301_with_ann.csv")
+
+
+## import 2014 dataset (population, employment & unemployment)
+ACS_14_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S0701_with_ann.csv")
+
+ACS_14_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S2301_with_ann.csv")
+
+
+## import 2015 dataset (population, employment & unemployment)
+ACS_15_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S0701_with_ann.csv")
+
+ACS_15_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S2301_with_ann.csv")
+
+
+## import 2016 dataset (population, employment & unemployment)
+ACS_16_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv")
+
+ACS_16_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S2301_with_ann.csv")
+```
+
+
+
+
 
 ## run the query and convert to data.frame()
-d = occ(query=sp, from='ebird',limit = 100) %>% occ2df()
-```
-This can take a few seconds.
 
-```{r, fig.width=6, fig.height=3, fig.cap="Map illustrating the known occurrence locations"}
-# Load coastline
-map=map_data("world")
-
-ggplot(d,aes(x=longitude,y=latitude))+
-  geom_polygon(aes(x=long,y=lat,group=group),data=map)+
-  geom_point(col="red")+
-  coord_equal()
-```
 
 
 # Results

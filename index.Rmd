@@ -8,8 +8,10 @@ subtitle: Identifying resilient and non-resilient regions by using two different
 Recently, the notion of resilience has attracted attention from many economic geographers who try to understand how regional economies respond to and recover from disturbances. However, the concept of resilience in economic geography studies still remains unclear. Particularly, there is no universally-agreed resilience indicator to measure regional economic resilience.
 In order to explore regional economic resilience of 51 regions in the U.S. in response to the globali financial crisis in the late 2000s, this study attempts to use different type of resilience indicator termed as 'revised employment rate', which is the ratio of employed population to total population from age 16 to 64 considered as working age, instead of employment rte, one of the most commonly used resilience indicators.
 
+
 Employment rate = employed population / employed + unemployed population
 Revised employment rate = employed population / age 15-64 population
+
 
 The object of this project is to  explore regional resilience of 51 regions in the United States  by using two resilience indicators mentioned above.
 

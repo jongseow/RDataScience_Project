@@ -10,14 +10,16 @@ In order to explore regional economic resilience of 51 regions in the U.S. in re
 
 
 Employment rate = employed population / employed + unemployed population
+
 Revised employment rate = employed population / age 15-64 population
 
 
-The object of this project is to  explore regional resilience of 51 regions in the United States  by using two resilience indicators mentioned above.
+The object of this project is to  explore regional resilience of 51 regions in the United States  by using two resilience indicators mentioned above. Then, visualize and compare outputs from two different resilience indicators; 'employment rate' and 'revised employment rate'
 
 
 
 # Materials and methods
+On the basis of engineering resilience perspective, it is determined whether a certain region is resilient or non-resilient in response to the economic crisis. If a region is resilient, it implies the region fully recovers from the impact of crisis. For example, a region's post-shock employment level bounces back and restores pre-shock level employment after the decline of employment due to the crisis. It is considered as a resilient region. Otherwise, a regional system does not restore its pre-shock state, it is considered as non-resilient region.
 
 
 
@@ -40,16 +42,18 @@ See [http://rmarkdown.rstudio.com/](http://rmarkdown.rstudio.com/) for all the a
 
 Here's my first code chunk.
 ```{r}
-library(readr)
-library(sp)
+
 
 ```
 
-Load any required packages in a code chunk (you may need to install some packages):
+Load any required packages in a code chunk
 
 ```{r, message=F, warning=F}
-
-
+library(readr)
+library(sp)
+library(acs)
+library(censusapi)
+library(tidycensus)
 
 
 ```

@@ -306,11 +306,13 @@ div.tocify {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Recently, the notion of resilience has attracted attention from many economic geographers who try to understand how regional economies respond to and recover from disturbances. However, the concept of resilience in economic geography studies still remains unclear. Particularly, there is no universally-agreed resilience indicator to measure regional economic resilience. In order to explore regional economic resilience of 51 regions in the U.S. in response to the globali financial crisis in the late 2000s, this study attempts to use different type of resilience indicator termed as ‘revised employment rate’, which is the ratio of employed population to total population from age 16 to 64 considered as working age, instead of employment rte, one of the most commonly used resilience indicators.</p>
-<p>Employment rate = employed population / employed + unemployed population Revised employment rate = employed population / age 15-64 population</p>
-<p>The object of this project is to explore regional resilience of 51 regions in the United States by using two resilience indicators mentioned above.</p>
+<p>Employment rate = employed population / employed + unemployed population</p>
+<p>Revised employment rate = employed population / age 15-64 population</p>
+<p>The object of this project is to explore regional resilience of 51 regions in the United States by using two resilience indicators mentioned above. Then, visualize and compare outputs from two different resilience indicators; ‘employment rate’ and ‘revised employment rate’</p>
 </div>
 <div id="materials-and-methods" class="section level1">
 <h1>Materials and methods</h1>
+<p>On the basis of engineering resilience perspective, it is determined whether a certain region is resilient or non-resilient in response to the economic crisis. If a region is resilient, it implies the region fully recovers from the impact of crisis. For example, a region’s post-shock employment level bounces back and restores pre-shock level employment after the decline of employment due to the crisis. It is considered as a resilient region. Otherwise, a regional system does not restore its pre-shock state, it is considered as non-resilient region.</p>
 <p>Narrative and most code will go here. Describe what you are doing and show how to do it (with code).</p>
 <p>You can do bullets like this:</p>
 <ul>
@@ -326,168 +328,84 @@ div.tocify {
 </ol>
 <p>See <a href="http://rmarkdown.rstudio.com/" class="uri">http://rmarkdown.rstudio.com/</a> for all the amazing things you can do.</p>
 <p>Here’s my first code chunk.</p>
+<p>Load any required packages in a code chunk</p>
 <pre class="r"><code>library(readr)
-library(sp)</code></pre>
-<pre><code>## Warning: package &#39;sp&#39; was built under R version 3.4.2</code></pre>
-<p>Load any required packages in a code chunk (you may need to install some packages):</p>
+library(sp)
+library(acs)
+library(censusapi)
+library(tidycensus)</code></pre>
 <pre class="r"><code>## import dataset from Github
 
 ## import 2005 dataset (population, employment &amp; unemployment)
-ACS_05_EST_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )</code></pre>
-<pre><code>## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_05_EST_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2006 dataset (population, employment &amp; unemployment)
-ACS_06_EST_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_06_EST_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2007 dataset (population, employment &amp; unemployment)
-ACS_07_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_07_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2008 dataset (population, employment &amp; unemployment)
-ACS_08_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_08_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2009 dataset (population, employment &amp; unemployment)
-ACS_09_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_09_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2010 dataset (population, employment &amp; unemployment)
-ACS_10_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_10_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2011 dataset (population, employment &amp; unemployment)
-ACS_11_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_11_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2012 dataset (population, employment &amp; unemployment)
-ACS_12_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_12_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2013 dataset (population, employment &amp; unemployment)
-ACS_13_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_13_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2014 dataset (population, employment &amp; unemployment)
-ACS_14_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_14_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2015 dataset (population, employment &amp; unemployment)
-ACS_15_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_15_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>## import 2016 dataset (population, employment &amp; unemployment)
-ACS_16_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
-<pre class="r"><code>ACS_16_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S2301_with_ann.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   .default = col_character()
-## )
-## See spec(...) for full column specifications.</code></pre>
+ACS_05_EST_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S0701_with_ann.csv&quot;)
+
+ACS_05_EST_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S2301_with_ann.csv&quot;)
+
+
+## import 2006 dataset (population, employment &amp; unemployment)
+ACS_06_EST_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S0701_with_ann.csv&quot;)
+
+ACS_06_EST_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S2301_with_ann.csv&quot;)
+
+
+## import 2007 dataset (population, employment &amp; unemployment)
+ACS_07_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S0701_with_ann.csv&quot;)
+
+ACS_07_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2008 dataset (population, employment &amp; unemployment)
+ACS_08_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv&quot;)
+
+ACS_08_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2009 dataset (population, employment &amp; unemployment)
+ACS_09_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S0701_with_ann.csv&quot;)
+
+ACS_09_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2010 dataset (population, employment &amp; unemployment)
+ACS_10_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv&quot;)
+
+ACS_10_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2011 dataset (population, employment &amp; unemployment)
+ACS_11_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S0701_with_ann.csv&quot;)
+
+ACS_11_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2012 dataset (population, employment &amp; unemployment)
+ACS_12_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S0701_with_ann.csv&quot;)
+
+ACS_12_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2013 dataset (population, employment &amp; unemployment)
+ACS_13_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S0701_with_ann.csv&quot;)
+
+ACS_13_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2014 dataset (population, employment &amp; unemployment)
+ACS_14_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S0701_with_ann.csv&quot;)
+
+ACS_14_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2015 dataset (population, employment &amp; unemployment)
+ACS_15_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S0701_with_ann.csv&quot;)
+
+ACS_15_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S2301_with_ann.csv&quot;)
+
+
+## import 2016 dataset (population, employment &amp; unemployment)
+ACS_16_1YR_S0701_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv&quot;)
+
+ACS_16_1YR_S2301_with_ann &lt;- read_csv(&quot;https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S2301_with_ann.csv&quot;)</code></pre>
 <div id="run-the-query-and-convert-to-data.frame" class="section level2">
 <h2>run the query and convert to data.frame()</h2>
 </div>

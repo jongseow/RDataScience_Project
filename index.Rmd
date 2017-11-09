@@ -61,7 +61,7 @@ library(tidycensus)
 
 
 
-```{r, warning=F} 
+```{r, message=F, warning=F} 
 ## import dataset from Github
 
 ## import 2005 dataset (population, employment & unemployment)

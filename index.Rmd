@@ -54,6 +54,7 @@ library(sp)
 library(acs)
 library(censusapi)
 library(tidycensus)
+library(DT)
 
 
 ```
@@ -134,6 +135,12 @@ ACS_15_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseo
 ACS_16_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv")
 
 ACS_16_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S2301_with_ann.csv")
+
+
+
+## Figures (temporary)
+
+datatable(ACS_05_EST_S2301_with_ann, options = list(pageLength = 5))
 ```
 
 

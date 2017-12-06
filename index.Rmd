@@ -48,6 +48,7 @@ Here's my first code chunk.
 
 Load any required packages in a code chunk
 
+
 ```{r, message=F, warning=F}
 library(readr)
 library(sp)
@@ -55,6 +56,9 @@ library(acs)
 library(censusapi)
 library(tidycensus)
 library(DT)
+library(tigris)
+library(ggplot2)
+library(plotly)
 
 
 ```
@@ -62,94 +66,225 @@ library(DT)
 
 
 
-```{r, message=F, warning=F} 
-## import dataset from Github
-
-## import 2005 dataset (population, employment & unemployment)
-ACS_05_EST_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S0701_with_ann.csv")
-
-ACS_05_EST_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S2301_with_ann.csv")
-
-
-## import 2006 dataset (population, employment & unemployment)
-ACS_06_EST_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S0701_with_ann.csv")
-
-ACS_06_EST_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S2301_with_ann.csv")
+```{r, message=F, warning=F}
+## change pop values type from factor to numeric 2005
+df05<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S0701_with_ann.csv")
+df05<-df05[-c(1,10),]
+popValues05<-as.numeric(levels(df05$HC01_EST_VC01))[df05$HC01_EST_VC01]
+incounty05<-as.numeric(levels(df05$HC02_EST_VC01))[df05$HC02_EST_VC01]*popValues05
+instate05<-as.numeric(levels(df05$HC03_EST_VC01))[df05$HC03_EST_VC01]*popValues05
+diffstate05<-as.numeric(levels(df05$HC04_EST_VC01))[df05$HC04_EST_VC01]*popValues05
+abroad05<-as.numeric(levels(df05$HC05_EST_VC01))[df05$HC05_EST_VC01]*popValues05
 
 
-## import 2007 dataset (population, employment & unemployment)
-ACS_07_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S0701_with_ann.csv")
-
-ACS_07_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S2301_with_ann.csv")
-
-
-## import 2008 dataset (population, employment & unemployment)
-ACS_08_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv")
-
-ACS_08_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S2301_with_ann.csv")
+## change pop values type from factor to numeric 2006
+df06<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S0701_with_ann.csv")
+df06<-df06[-c(1,10),]
+popValues06<-as.numeric(levels(df06$HC01_EST_VC01))[df06$HC01_EST_VC01]
+incounty06<-as.numeric(levels(df06$HC02_EST_VC01))[df06$HC02_EST_VC01]*popValues06
+instate06<-as.numeric(levels(df06$HC03_EST_VC01))[df06$HC03_EST_VC01]*popValues06
+diffstate06<-as.numeric(levels(df06$HC04_EST_VC01))[df06$HC04_EST_VC01]*popValues06
+abroad06<-as.numeric(levels(df06$HC05_EST_VC01))[df06$HC05_EST_VC01]*popValues06
 
 
-## import 2009 dataset (population, employment & unemployment)
-ACS_09_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S0701_with_ann.csv")
-
-ACS_09_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S2301_with_ann.csv")
-
-
-## import 2010 dataset (population, employment & unemployment)
-ACS_10_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv")
-
-ACS_10_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S2301_with_ann.csv")
+## change pop values type from factor to numeric 2007
+df07<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S0701_with_ann.csv")
+df07<-df07[-c(1,10),]
+popValues07<-as.numeric(levels(df07$HC01_EST_VC01))[df07$HC01_EST_VC01]
+incounty07<-as.numeric(levels(df07$HC02_EST_VC01))[df07$HC02_EST_VC01]*popValues07
+instate07<-as.numeric(levels(df07$HC03_EST_VC01))[df07$HC03_EST_VC01]*popValues07
+diffstate07<-as.numeric(levels(df07$HC04_EST_VC01))[df07$HC04_EST_VC01]*popValues07
+abroad07<-as.numeric(levels(df07$HC05_EST_VC01))[df07$HC05_EST_VC01]*popValues07
 
 
-## import 2011 dataset (population, employment & unemployment)
-ACS_11_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S0701_with_ann.csv")
-
-ACS_11_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S2301_with_ann.csv")
-
-
-## import 2012 dataset (population, employment & unemployment)
-ACS_12_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S0701_with_ann.csv")
-
-ACS_12_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S2301_with_ann.csv")
+## change pop values type from factor to numeric 2008
+df08<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv")
+df08<-df08[-c(1,10),]
+popValues08<-as.numeric(levels(df08$HC01_EST_VC01))[df08$HC01_EST_VC01]
+incounty08<-as.numeric(levels(df08$HC02_EST_VC01))[df08$HC02_EST_VC01]*popValues08
+instate08<-as.numeric(levels(df08$HC03_EST_VC01))[df08$HC03_EST_VC01]*popValues08
+diffstate08<-as.numeric(levels(df08$HC04_EST_VC01))[df08$HC04_EST_VC01]*popValues08
+abroad08<-as.numeric(levels(df08$HC05_EST_VC01))[df08$HC05_EST_VC01]*popValues08
 
 
-## import 2013 dataset (population, employment & unemployment)
-ACS_13_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S0701_with_ann.csv")
-
-ACS_13_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S2301_with_ann.csv")
-
-
-## import 2014 dataset (population, employment & unemployment)
-ACS_14_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S0701_with_ann.csv")
-
-ACS_14_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S2301_with_ann.csv")
+## change pop values type from factor to numeric 2009
+df09<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S0701_with_ann.csv")
+df09<-df09[-c(1,10),]
+popValues09<-as.numeric(levels(df09$HC01_EST_VC01))[df09$HC01_EST_VC01]
+incounty09<-as.numeric(levels(df09$HC02_EST_VC01))[df09$HC02_EST_VC01]*popValues09
+instate09<-as.numeric(levels(df09$HC03_EST_VC01))[df09$HC03_EST_VC01]*popValues09
+diffstate09<-as.numeric(levels(df09$HC04_EST_VC01))[df09$HC04_EST_VC01]*popValues09
+abroad09<-as.numeric(levels(df09$HC05_EST_VC01))[df09$HC05_EST_VC01]*popValues09
 
 
-## import 2015 dataset (population, employment & unemployment)
-ACS_15_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S0701_with_ann.csv")
-
-ACS_15_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S2301_with_ann.csv")
-
-
-## import 2016 dataset (population, employment & unemployment)
-ACS_16_1YR_S0701_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv")
-
-ACS_16_1YR_S2301_with_ann <- read_csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S2301_with_ann.csv")
+## change pop values type from factor to numeric 2010
+df10<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv")
+df10<-df10[-c(1,10),]
+popValues10<-as.numeric(levels(df10$HC01_EST_VC01))[df10$HC01_EST_VC01]
+incounty10<-as.numeric(levels(df10$HC02_EST_VC01))[df10$HC02_EST_VC01]*popValues10
+instate10<-as.numeric(levels(df10$HC03_EST_VC01))[df10$HC03_EST_VC01]*popValues10
+diffstate10<-as.numeric(levels(df10$HC04_EST_VC01))[df10$HC04_EST_VC01]*popValues10
+abroad10<-as.numeric(levels(df10$HC05_EST_VC01))[df10$HC05_EST_VC01]*popValues10
 
 
+## change pop values type from factor to numeric 2011
+df11<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S0701_with_ann.csv")
+df11<-df11[-c(1,10),]
+popValues11<-as.numeric(levels(df11$HC01_EST_VC01))[df11$HC01_EST_VC01]
+incounty11<-as.numeric(levels(df11$HC02_EST_VC01))[df11$HC02_EST_VC01]*popValues11
+instate11<-as.numeric(levels(df11$HC03_EST_VC01))[df11$HC03_EST_VC01]*popValues11
+diffstate11<-as.numeric(levels(df11$HC04_EST_VC01))[df11$HC04_EST_VC01]*popValues11
+abroad11<-as.numeric(levels(df11$HC05_EST_VC01))[df11$HC05_EST_VC01]*popValues11
 
-## Figures (temporary)
 
-datatable(ACS_05_EST_S2301_with_ann, options = list(pageLength = 5))
+## change pop values type from factor to numeric 2012
+df12<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S0701_with_ann.csv")
+df12<-df12[-c(1,10),]
+popValues12<-as.numeric(levels(df12$HC01_EST_VC01))[df12$HC01_EST_VC01]
+incounty12<-as.numeric(levels(df12$HC02_EST_VC01))[df12$HC02_EST_VC01]*popValues12
+instate12<-as.numeric(levels(df12$HC03_EST_VC01))[df12$HC03_EST_VC01]*popValues12
+diffstate12<-as.numeric(levels(df12$HC04_EST_VC01))[df12$HC04_EST_VC01]*popValues12
+abroad12<-as.numeric(levels(df12$HC05_EST_VC01))[df12$HC05_EST_VC01]*popValues12
+
+
+#change pop values type from factor to numeric 2013
+df13<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S0701_with_ann.csv")
+df13<-df13[-c(1,10),]
+popValues13<-as.numeric(levels(df13$HC01_EST_VC01))[df13$HC01_EST_VC01]
+incounty13<-as.numeric(levels(df13$HC02_EST_VC01))[df13$HC02_EST_VC01]*popValues13
+instate13<-as.numeric(levels(df13$HC03_EST_VC01))[df13$HC03_EST_VC01]*popValues13
+diffstate13<-as.numeric(levels(df13$HC04_EST_VC01))[df13$HC04_EST_VC01]*popValues13
+abroad13<-as.numeric(levels(df13$HC05_EST_VC01))[df13$HC05_EST_VC01]*popValues13
+
+
+## change pop values type from factor to numeric 2014
+df14<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S0701_with_ann.csv")
+df14<-df14[-c(1,10),]
+popValues14<-as.numeric(levels(df14$HC01_EST_VC01))[df14$HC01_EST_VC01]
+incounty14<-as.numeric(levels(df14$HC02_EST_VC01))[df14$HC02_EST_VC01]*popValues14
+instate14<-as.numeric(levels(df14$HC03_EST_VC01))[df14$HC03_EST_VC01]*popValues14
+diffstate14<-as.numeric(levels(df14$HC04_EST_VC01))[df14$HC04_EST_VC01]*popValues14
+abroad14<-as.numeric(levels(df14$HC05_EST_VC01))[df14$HC05_EST_VC01]*popValues14
+
+
+## change pop values type from factor to numeric 2015
+df15<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S0701_with_ann.csv")
+df15<-df15[-c(1,10),]
+popValues15<-as.numeric(levels(df15$HC01_EST_VC01))[df15$HC01_EST_VC01]
+incounty15<-as.numeric(levels(df15$HC02_EST_VC01))[df15$HC02_EST_VC01]*popValues15
+instate15<-as.numeric(levels(df15$HC03_EST_VC01))[df15$HC03_EST_VC01]*popValues15
+diffstate15<-as.numeric(levels(df15$HC04_EST_VC01))[df15$HC04_EST_VC01]*popValues15
+abroad15<-as.numeric(levels(df15$HC05_EST_VC01))[df15$HC05_EST_VC01]*popValues15
+
+
+## change pop values type from factor to numeric 2016
+df16<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv") 
+df16<-df16[-c(1,10),] 
+popValues16<-as.numeric(levels(df16$HC01_EST_VC01))[df16$HC01_EST_VC01]
+incounty16<-as.numeric(levels(df16$HC02_EST_VC01))[df16$HC02_EST_VC01]*popValues16
+instate16<-as.numeric(levels(df16$HC03_EST_VC01))[df16$HC03_EST_VC01]*popValues16
+diffstate16<-as.numeric(levels(df16$HC04_EST_VC01))[df16$HC04_EST_VC01]*popValues16
+abroad16<-as.numeric(levels(df16$HC05_EST_VC01))[df16$HC05_EST_VC01]*popValues16
+
+
+# creat a new data frame for Choropleth map 
+df<-data.frame(((popValues09- popValues08)/popValues08)*100, ((incounty09- incounty08)/incounty08)*100, 
+               ((instate09- instate08)/instate08)*100, ((diffstate09- diffstate08)/diffstate08)*100, ((abroad09- abroad08)/abroad08)*100)
+
+df.example<-read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2011_us_ag_exports.csv")
+df$state<-with(df.example, paste(state))
+df$code<-with(df.example, paste(code))
+colnames(df)<-c("pop", "incounty", "instate", "diffstate", "abroad", "state", "code")
+
+
+# this c map for populaltion changes between 08-09 year 
+df$box <- with(df, paste(state))
+
+g <- list(scope = 'usa',
+          projection = list(type = 'albers usa'))
+
+p <- plot_geo(df,locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~pop,text = ~box, locations = ~code,
+    color = ~pop, colors = 'Purples'
+  ) %>%
+  colorbar(title = "Population Change (percentage)") %>%
+  layout(
+    title = '2008-09 US population chnages by State',
+    geo = g
+  )
+p
+
+
+
+# this c map for incounty changes between 08-09 year
+df$box <- with(df, paste(state))
+
+g <- list(scope = 'usa',
+          projection = list(type = 'albers usa'))
+
+p <- plot_geo(df,locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~incounty,text = ~box, locations = ~code,
+    color = ~incounty, colors = 'Purples'
+  ) %>%
+  colorbar(title = "population changes (percentage)") %>%
+  layout(
+    title = '2008-09 US inter-county moved population changes by State',
+    geo = g
+  )
+p
+
+
+
+# this c map for instate changes between 08-09 year
+df$box <- with(df, paste(state))
+
+g <- list(scope = 'usa',
+          projection = list(type = 'albers usa'))
+
+p <- plot_geo(df,locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~instate,text = ~box, locations = ~code,
+    color = ~instate, colors = 'Purples'
+  ) %>%
+  colorbar(title = "population change (percentage)") %>%
+  layout(
+    title = '2008-09 intra-state moved population by State',
+    geo = g
+  )
+p
+
+
+
+# this c map for abroad changes between 08-09 year 
+df$box <- with(df, paste(state))
+
+g <- list(scope = 'usa',
+          projection = list(type = 'albers usa'))
+
+p <- plot_geo(df,locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~abroad,text = ~box, locations = ~code,
+    color = ~abroad, colors = 'Purples'
+  ) %>%
+  colorbar(title = "Moved population size from abroad (percentage)") %>%
+  layout(
+    title = '2008-09 moved population from abroad by State',
+    geo = g
+  )
+p
+
+
 ```
-
-
-
-
 
 ## run the query and convert to data.frame()
 
 
+```{r}
+
+
+```
 
 # Results
 

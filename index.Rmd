@@ -1,6 +1,6 @@
 ---
 title: "Visualization of  U.S. population mobility changes"
-author: Jong-Seo Won
+author: "Jong-Seo Won"
 ---
 
 # Introduction

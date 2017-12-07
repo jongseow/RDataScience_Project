@@ -1,60 +1,20 @@
 ---
-title: "A comparative analysis of regional economic resilience: employment rate and revised employment rate"
+title: "Visualization of  U.S. population mobility changes"
 author: Jong-Seo Won
-subtitle: Identifying resilient and non-resilient regions by using two different resilience indicators 
 ---
 
 # Introduction
-Recently, the notion of resilience has attracted attention from many economic geographers who try to understand how regional economies respond to and recover from disturbances. However, the concept of resilience in economic geography studies still remains unclear. Particularly, there is no universally-agreed resilience indicator to measure regional economic resilience.
-In order to explore regional economic resilience of 51 regions in the U.S. in response to the globali financial crisis in the late 2000s, this study attempts to use different type of resilience indicator termed as 'revised employment rate', which is the ratio of employed population to total population from age 16 to 64 considered as working age, instead of employment rte, one of the most commonly used resilience indicators.
-
-
-Employment rate = employed population / employed + unemployed population
-
-Revised employment rate = employed population / age 15-64 population
-
-
-The object of this project is to  explore regional resilience of 51 regions in the United States  by using two resilience indicators mentioned above. Then, visualize and compare outputs from two different resilience indicators; 'employment rate' and 'revised employment rate'
+Recently, the notion of resilience has attracted attention from many economic geographers who try to understand how regional economies respond to and recover from disturbances. This project attempts to conduct a visualization as a part of study that examines the relationship between population and financial crisis. While regional economic resilience studies investigates how financial crises affect to regional economies, this project ultimately tries to explore how economic downturn affects to population mobility patterns. As a first part of the study of the relationship between population mobility and financial crisis, this project aims to visualize the changing rate of population mobility of 5o states in the United States from 2008 to 2009 when the global financial severely hit U.S.
 
 
 
-# Materials and methods
-On the basis of engineering resilience perspective, it is determined whether a certain region is resilient or non-resilient in response to the economic crisis. If a region is resilient, it implies the region fully recovers from the impact of crisis. For example, a region's post-shock employment level bounces back and restores pre-shock level employment after the decline of employment due to the crisis. It is considered as a resilient region. Otherwise, a regional system does not restore its pre-shock state, it is considered as non-resilient region.
+# Materials and methods 
 
-
-
-Narrative and most code will go here.  Describe what you are doing and show how to do it (with code).
-
-You can do bullets like this:
-
-* The first most important thing
-* The second most important thing
-* The third most important thing
-
-You can do numbers like this:
-
-1. The first most important thing
-2. The second most important thing
-3. The third most important thing
-
-See [http://rmarkdown.rstudio.com/](http://rmarkdown.rstudio.com/) for all the amazing things you can do.
-
-
-Here's my first code chunk.
-```{r}
-
-
-```
-
-Load any required packages in a code chunk
-
+# Packages
 
 ```{r, message=F, warning=F}
 library(readr)
 library(sp)
-library(acs)
-library(censusapi)
-library(tidycensus)
 library(DT)
 library(tigris)
 library(ggplot2)
@@ -64,40 +24,30 @@ library(plotly)
 ```
 
 
+# Data
+Population mobility data  (only in-migration data)
 
+Within same county
+From different county, same state
+From different states
+From abroad
+
+```{r}
+
+
+```
+
+
+
+# Methodology
+
+Changing rate of moved population size
+= (moved population in 2009) - (moved population in 2008) / (moved population in 2008) * 100
 
 ```{r, message=F, warning=F}
-## change pop values type from factor to numeric 2005
-df05<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_05_EST_S0701_with_ann.csv")
-df05<-df05[-c(1,10),]
-popValues05<-as.numeric(levels(df05$HC01_EST_VC01))[df05$HC01_EST_VC01]
-incounty05<-as.numeric(levels(df05$HC02_EST_VC01))[df05$HC02_EST_VC01]*popValues05
-instate05<-as.numeric(levels(df05$HC03_EST_VC01))[df05$HC03_EST_VC01]*popValues05
-diffstate05<-as.numeric(levels(df05$HC04_EST_VC01))[df05$HC04_EST_VC01]*popValues05
-abroad05<-as.numeric(levels(df05$HC05_EST_VC01))[df05$HC05_EST_VC01]*popValues05
 
 
-## change pop values type from factor to numeric 2006
-df06<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_06_EST_S0701_with_ann.csv")
-df06<-df06[-c(1,10),]
-popValues06<-as.numeric(levels(df06$HC01_EST_VC01))[df06$HC01_EST_VC01]
-incounty06<-as.numeric(levels(df06$HC02_EST_VC01))[df06$HC02_EST_VC01]*popValues06
-instate06<-as.numeric(levels(df06$HC03_EST_VC01))[df06$HC03_EST_VC01]*popValues06
-diffstate06<-as.numeric(levels(df06$HC04_EST_VC01))[df06$HC04_EST_VC01]*popValues06
-abroad06<-as.numeric(levels(df06$HC05_EST_VC01))[df06$HC05_EST_VC01]*popValues06
-
-
-## change pop values type from factor to numeric 2007
-df07<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_07_1YR_S0701_with_ann.csv")
-df07<-df07[-c(1,10),]
-popValues07<-as.numeric(levels(df07$HC01_EST_VC01))[df07$HC01_EST_VC01]
-incounty07<-as.numeric(levels(df07$HC02_EST_VC01))[df07$HC02_EST_VC01]*popValues07
-instate07<-as.numeric(levels(df07$HC03_EST_VC01))[df07$HC03_EST_VC01]*popValues07
-diffstate07<-as.numeric(levels(df07$HC04_EST_VC01))[df07$HC04_EST_VC01]*popValues07
-abroad07<-as.numeric(levels(df07$HC05_EST_VC01))[df07$HC05_EST_VC01]*popValues07
-
-
-## change pop values type from factor to numeric 2008
+## change data type from factor to numeric (2008)
 df08<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv")
 df08<-df08[-c(1,10),]
 popValues08<-as.numeric(levels(df08$HC01_EST_VC01))[df08$HC01_EST_VC01]
@@ -107,7 +57,7 @@ diffstate08<-as.numeric(levels(df08$HC04_EST_VC01))[df08$HC04_EST_VC01]*popValue
 abroad08<-as.numeric(levels(df08$HC05_EST_VC01))[df08$HC05_EST_VC01]*popValues08
 
 
-## change pop values type from factor to numeric 2009
+## change data type from factor to numeric (2009)
 df09<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_09_1YR_S0701_with_ann.csv")
 df09<-df09[-c(1,10),]
 popValues09<-as.numeric(levels(df09$HC01_EST_VC01))[df09$HC01_EST_VC01]
@@ -117,7 +67,7 @@ diffstate09<-as.numeric(levels(df09$HC04_EST_VC01))[df09$HC04_EST_VC01]*popValue
 abroad09<-as.numeric(levels(df09$HC05_EST_VC01))[df09$HC05_EST_VC01]*popValues09
 
 
-## change pop values type from factor to numeric 2010
+## change data type from factor to numeric (2010)
 df10<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv")
 df10<-df10[-c(1,10),]
 popValues10<-as.numeric(levels(df10$HC01_EST_VC01))[df10$HC01_EST_VC01]
@@ -127,67 +77,13 @@ diffstate10<-as.numeric(levels(df10$HC04_EST_VC01))[df10$HC04_EST_VC01]*popValue
 abroad10<-as.numeric(levels(df10$HC05_EST_VC01))[df10$HC05_EST_VC01]*popValues10
 
 
-## change pop values type from factor to numeric 2011
-df11<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_11_1YR_S0701_with_ann.csv")
-df11<-df11[-c(1,10),]
-popValues11<-as.numeric(levels(df11$HC01_EST_VC01))[df11$HC01_EST_VC01]
-incounty11<-as.numeric(levels(df11$HC02_EST_VC01))[df11$HC02_EST_VC01]*popValues11
-instate11<-as.numeric(levels(df11$HC03_EST_VC01))[df11$HC03_EST_VC01]*popValues11
-diffstate11<-as.numeric(levels(df11$HC04_EST_VC01))[df11$HC04_EST_VC01]*popValues11
-abroad11<-as.numeric(levels(df11$HC05_EST_VC01))[df11$HC05_EST_VC01]*popValues11
+```
+
+# Results
 
 
-## change pop values type from factor to numeric 2012
-df12<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_12_1YR_S0701_with_ann.csv")
-df12<-df12[-c(1,10),]
-popValues12<-as.numeric(levels(df12$HC01_EST_VC01))[df12$HC01_EST_VC01]
-incounty12<-as.numeric(levels(df12$HC02_EST_VC01))[df12$HC02_EST_VC01]*popValues12
-instate12<-as.numeric(levels(df12$HC03_EST_VC01))[df12$HC03_EST_VC01]*popValues12
-diffstate12<-as.numeric(levels(df12$HC04_EST_VC01))[df12$HC04_EST_VC01]*popValues12
-abroad12<-as.numeric(levels(df12$HC05_EST_VC01))[df12$HC05_EST_VC01]*popValues12
-
-
-#change pop values type from factor to numeric 2013
-df13<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_13_1YR_S0701_with_ann.csv")
-df13<-df13[-c(1,10),]
-popValues13<-as.numeric(levels(df13$HC01_EST_VC01))[df13$HC01_EST_VC01]
-incounty13<-as.numeric(levels(df13$HC02_EST_VC01))[df13$HC02_EST_VC01]*popValues13
-instate13<-as.numeric(levels(df13$HC03_EST_VC01))[df13$HC03_EST_VC01]*popValues13
-diffstate13<-as.numeric(levels(df13$HC04_EST_VC01))[df13$HC04_EST_VC01]*popValues13
-abroad13<-as.numeric(levels(df13$HC05_EST_VC01))[df13$HC05_EST_VC01]*popValues13
-
-
-## change pop values type from factor to numeric 2014
-df14<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_14_1YR_S0701_with_ann.csv")
-df14<-df14[-c(1,10),]
-popValues14<-as.numeric(levels(df14$HC01_EST_VC01))[df14$HC01_EST_VC01]
-incounty14<-as.numeric(levels(df14$HC02_EST_VC01))[df14$HC02_EST_VC01]*popValues14
-instate14<-as.numeric(levels(df14$HC03_EST_VC01))[df14$HC03_EST_VC01]*popValues14
-diffstate14<-as.numeric(levels(df14$HC04_EST_VC01))[df14$HC04_EST_VC01]*popValues14
-abroad14<-as.numeric(levels(df14$HC05_EST_VC01))[df14$HC05_EST_VC01]*popValues14
-
-
-## change pop values type from factor to numeric 2015
-df15<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_15_1YR_S0701_with_ann.csv")
-df15<-df15[-c(1,10),]
-popValues15<-as.numeric(levels(df15$HC01_EST_VC01))[df15$HC01_EST_VC01]
-incounty15<-as.numeric(levels(df15$HC02_EST_VC01))[df15$HC02_EST_VC01]*popValues15
-instate15<-as.numeric(levels(df15$HC03_EST_VC01))[df15$HC03_EST_VC01]*popValues15
-diffstate15<-as.numeric(levels(df15$HC04_EST_VC01))[df15$HC04_EST_VC01]*popValues15
-abroad15<-as.numeric(levels(df15$HC05_EST_VC01))[df15$HC05_EST_VC01]*popValues15
-
-
-## change pop values type from factor to numeric 2016
-df16<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_16_1YR_S0701_with_ann.csv") 
-df16<-df16[-c(1,10),] 
-popValues16<-as.numeric(levels(df16$HC01_EST_VC01))[df16$HC01_EST_VC01]
-incounty16<-as.numeric(levels(df16$HC02_EST_VC01))[df16$HC02_EST_VC01]*popValues16
-instate16<-as.numeric(levels(df16$HC03_EST_VC01))[df16$HC03_EST_VC01]*popValues16
-diffstate16<-as.numeric(levels(df16$HC04_EST_VC01))[df16$HC04_EST_VC01]*popValues16
-abroad16<-as.numeric(levels(df16$HC05_EST_VC01))[df16$HC05_EST_VC01]*popValues16
-
-
-# creat a new data frame for Choropleth map 
+```{r}
+# creat a new dataframe for Choropleth map  (changing rate 08-09)
 df<-data.frame(((popValues09- popValues08)/popValues08)*100, ((incounty09- incounty08)/incounty08)*100, 
                ((instate09- instate08)/instate08)*100, ((diffstate09- diffstate08)/diffstate08)*100, ((abroad09- abroad08)/abroad08)*100)
 
@@ -197,7 +93,8 @@ df$code<-with(df.example, paste(code))
 colnames(df)<-c("pop", "incounty", "instate", "diffstate", "abroad", "state", "code")
 
 
-# this c map for populaltion changes between 08-09 year 
+
+# Map for populaltion changes in 2008-2009 
 df$box <- with(df, paste(state))
 
 g <- list(scope = 'usa',
@@ -210,14 +107,14 @@ p <- plot_geo(df,locationmode = 'USA-states') %>%
   ) %>%
   colorbar(title = "Population Change (percentage)") %>%
   layout(
-    title = '2008-09 US population chnages by State',
+    title = '2008-09 population changes by State',
     geo = g
   )
 p
 
 
 
-# this c map for incounty changes between 08-09 year
+# Map for population mobility (different counties within same state) changes in 2008-2009
 df$box <- with(df, paste(state))
 
 g <- list(scope = 'usa',
@@ -230,14 +127,14 @@ p <- plot_geo(df,locationmode = 'USA-states') %>%
   ) %>%
   colorbar(title = "population changes (percentage)") %>%
   layout(
-    title = '2008-09 US inter-county moved population changes by State',
+    title = '2008-09 US intra-county moved population changes',
     geo = g
   )
 p
 
 
 
-# this c map for instate changes between 08-09 year
+# Map for population mobility (from different states) changes in 2008-2009
 df$box <- with(df, paste(state))
 
 g <- list(scope = 'usa',
@@ -250,14 +147,34 @@ p <- plot_geo(df,locationmode = 'USA-states') %>%
   ) %>%
   colorbar(title = "population change (percentage)") %>%
   layout(
-    title = '2008-09 intra-state moved population by State',
+    title = '2008-09 moved population from different counties within same state',
     geo = g
   )
 p
 
 
 
-# this c map for abroad changes between 08-09 year 
+# Map for population mobility (different counties within same state) changes in 2008-2009
+df$box <- with(df, paste(state))
+
+g <- list(scope = 'usa',
+          projection = list(type = 'albers usa'))
+
+p <- plot_geo(df,locationmode = 'USA-states') %>%
+  add_trace(
+    z = ~diffstate,text = ~box, locations = ~code,
+    color = ~diffstate, colors = 'Purples'
+  ) %>%
+  colorbar(title = "population changes (percentage)") %>%
+  layout(
+    title = '2008-09 US inter-state moved population changes',
+    geo = g
+  )
+p
+
+
+
+# Map for population mobility (from abroad) changes in 2008-2009 
 df$box <- with(df, paste(state))
 
 g <- list(scope = 'usa',
@@ -270,15 +187,12 @@ p <- plot_geo(df,locationmode = 'USA-states') %>%
   ) %>%
   colorbar(title = "Moved population size from abroad (percentage)") %>%
   layout(
-    title = '2008-09 moved population from abroad by State',
+    title = '2008-09 moved population from abroad',
     geo = g
   )
 p
 
-
 ```
-
-## run the query and convert to data.frame()
 
 
 ```{r}
@@ -286,13 +200,12 @@ p
 
 ```
 
-# Results
-
-Show tables, plots, etc. and describe them.
 
 # Conclusions
 
 What have you learned?  Are there any broader implications?
 
-# References
 
+# References
+The population mobility data set used in this project was downloaded from the US Census Bureau
+U.S. Census Bureau (2008-2010). Geographic Mobility by selected characerustucs in the United States, 2008, 2009, and 2010 American Community Survey 1-year estimates.

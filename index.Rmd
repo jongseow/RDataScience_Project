@@ -72,6 +72,7 @@ abroad09<-as.numeric(levels(df09$HC05_EST_VC01))[df09$HC05_EST_VC01]*popValues09
 
 # Results
 
+All five interactive coropleth maps below demonstrate changing rate of total population, moved population from same county, moved population from different counties within same state, moved population from different states, and moved population from abroad from 2008 to 2009.
 
 ```{r}
 # creat a new dataframe for Choropleth map  (changing rate 08-09)
@@ -190,7 +191,10 @@ p
 
 # Conclusions
 
-What have you learned?  Are there any broader implications?
+Those five interactive coropleth maps successfully visualize the changing rate of four different types of population mobility and total population from 2008 to 2009 when global financial crisis had a significant impact on the U.S. According to five interactive coropleth maps, it is hard to find any similar geographical patterns among them.
+This project is meaningful as the first stage of exploring the relationship between population mobility and financial crisis. Visualization of changing rate of four different population mobility types enables us to find out which states experienced dramatic increase or decrease in terms of population mobility during the recession. On the basis of this first step, it might be possible to investigate the causal relationship between population mobility and financial crisis.
+
+
 
 
 # References

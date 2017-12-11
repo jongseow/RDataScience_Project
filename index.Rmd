@@ -4,14 +4,17 @@ author: "Jong-Seo Won"
 ---
 
 # Introduction
-Recently, the notion of resilience has attracted attention from many economic geographers who try to understand how regional economies respond to and recover from disturbances. This project attempts to conduct a visualization as a part of study that examines the relationship between population and financial crisis. While regional economic resilience studies investigates how financial crises affect to regional economies, this project ultimately tries to explore how economic downturn affects to population mobility patterns. As a first part of the study of the relationship between population mobility and financial crisis, this project aims to visualize the changing rate of population mobility of 5o states in the United States from 2008 to 2009 when the global financial severely hit U.S.
 
+Numerious studies have found conomic and financial crises tend to result in the significant changes on international migration patterns (Kothari et al., 2013). While there are many researches that have examined the relationship between labor (aged from 16 to64) mobility and financial crisis, it seems there are not many studies which focus on the relationship between financial crisis and total population.
+Instead of exploring causality between financial crisis and population mobility, this project attempts to conduct a visualization. Specifically, this project aims to visualize the changing rate of population mobility of 5o states in the United States from 2008 to 2009 when the global financial severely hit U.S.
+This project attempts to examine population mobility based on the four different types of population mobility; moved population from same county, moved population from different counties within same state, moved population from different states, and moved population from abroad. 
 
 
 # Materials and methods 
 
 # Packages
 
+Particulary, 'Plotly' R package is necessary for creating interactive map.
 ```{r, message=F, warning=F}
 library(readr)
 library(sp)
@@ -20,22 +23,18 @@ library(tigris)
 library(ggplot2)
 library(plotly)
 
-
 ```
 
 
 # Data
-Population mobility data  (only in-migration data)
+Population mobility data (only in-migration data) was downloaded from American Factfinder website.
 
-Within same county
-From different county, same state
-From different states
-From abroad
+moved population from same county
+moved population from different counties within same state
+moved population from different states
+moved population from abroad
 
-```{r}
-
-
-```
+All those four moved population data are aggregated at the state-level.
 
 
 
@@ -44,8 +43,10 @@ From abroad
 Changing rate of moved population size
 = (moved population in 2009) - (moved population in 2008) / (moved population in 2008) * 100
 
-```{r, message=F, warning=F}
 
+Since U.S. census provides the ration of moved population to total population, it is necessary to calculate the value of moved population. The only variable which is provided in orignial value is total population. In addition, the ration values are not provided in numeric type, it is also necessary to change ration value from factor type into numeric type.
+
+```{r, message=F, warning=F}
 
 ## change data type from factor to numeric (2008)
 df08<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_08_1YR_S0701_with_ann.csv")
@@ -66,18 +67,8 @@ instate09<-as.numeric(levels(df09$HC03_EST_VC01))[df09$HC03_EST_VC01]*popValues0
 diffstate09<-as.numeric(levels(df09$HC04_EST_VC01))[df09$HC04_EST_VC01]*popValues09
 abroad09<-as.numeric(levels(df09$HC05_EST_VC01))[df09$HC05_EST_VC01]*popValues09
 
-
-## change data type from factor to numeric (2010)
-df10<-read.csv("https://raw.githubusercontent.com/jongseow/RDataScience_Project/master/data_project/ACS_10_1YR_S0701_with_ann.csv")
-df10<-df10[-c(1,10),]
-popValues10<-as.numeric(levels(df10$HC01_EST_VC01))[df10$HC01_EST_VC01]
-incounty10<-as.numeric(levels(df10$HC02_EST_VC01))[df10$HC02_EST_VC01]*popValues10
-instate10<-as.numeric(levels(df10$HC03_EST_VC01))[df10$HC03_EST_VC01]*popValues10
-diffstate10<-as.numeric(levels(df10$HC04_EST_VC01))[df10$HC04_EST_VC01]*popValues10
-abroad10<-as.numeric(levels(df10$HC05_EST_VC01))[df10$HC05_EST_VC01]*popValues10
-
-
 ```
+
 
 # Results
 
@@ -195,10 +186,6 @@ p
 ```
 
 
-```{r}
-
-
-```
 
 
 # Conclusions
@@ -207,5 +194,8 @@ What have you learned?  Are there any broader implications?
 
 
 # References
+Kothari, S., Saporta-Eksten, I., & Yu, E. (2013). The (un) importance of geographical mobility in the Great Recession. Review of Economic Dynamics, 16(3), 553-563.
+
+Data source: 
 The population mobility data set used in this project was downloaded from the US Census Bureau
-U.S. Census Bureau (2008-2010). Geographic Mobility by selected characerustucs in the United States, 2008, 2009, and 2010 American Community Survey 1-year estimates.
+U.S. Census Bureau (2008-2009). Geographic Mobility by selected characerustucs in the United States, 2008 and 2009 American Community Survey 1-year estimates.
